@@ -1,6 +1,9 @@
 name: release dispatch
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   check:
