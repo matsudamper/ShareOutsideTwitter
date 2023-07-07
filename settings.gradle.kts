@@ -19,7 +19,7 @@ dependencyResolutionManagement {
             version("android.buildTools", "33.0.1")
             version("android.compose.compiler", "1.4.3")
 
-            version("agp", "8.2.0-alpha07")
+            version("agp", "8.0.2")
             version("kotlin", "1.8.10")
             version("core_ktx", "1.9.0")
             version("junit", "4.13.2")
