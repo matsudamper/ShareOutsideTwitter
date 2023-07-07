@@ -15,7 +15,7 @@ android {
     buildToolsVersion = libs.versions.android.buildTools.get()
 
     signingConfigs {
-        getByName("release") {
+        create("release") {
             storeFile = file(System.getenv("STORE_FILE"))
             storePassword = System.getenv("STORE_PASSWORD")
             keyAlias = System.getenv("KEY_ALIAS")
