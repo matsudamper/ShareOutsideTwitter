@@ -39,7 +39,11 @@ dependencyResolutionManagement {
                 .versionRef("lifecycle_runtime_ktx")
             library("activity_compose", "androidx.activity", "activity-compose")
                 .versionRef("activity_compose")
-
+            run {
+                library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
+                library("firebase.crashlytics", "com.google.firebase", "firebase-crashlytics-ktx").withoutVersion()
+                library("firebase.analytics", "com.google.firebase", "firebase-analytics-ktx").withoutVersion()
+            }
             // BOM
             run {
                 library("compose_bom", "androidx.compose", "compose-bom")
@@ -62,6 +66,8 @@ dependencyResolutionManagement {
 
             plugin("androidApplication", "com.android.application").versionRef("agp")
             plugin("kotlinAndroid", "org.jetbrains.kotlin.android").versionRef("kotlin")
+            plugin("appdistribution", "com.google.firebase.appdistribution").version("4.0.0")
+            plugin("googleServices", "com.google.gms.google-services").version("4.3.15")
         }
     }
 }
