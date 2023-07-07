@@ -14,6 +14,15 @@ android {
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
     buildToolsVersion = libs.versions.android.buildTools.get()
 
+    signingConfigs {
+        getByName("release") {
+            storeFile = file(System.getenv("STORE_FILE"))
+            storePassword = System.getenv("STORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+        }
+    }
+
     defaultConfig {
         minSdk = libs.versions.android.sdk.min.get().toInt()
         targetSdk = libs.versions.android.sdk.target.get().toInt()
