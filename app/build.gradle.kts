@@ -69,9 +69,13 @@ android {
 }
 
 play {
-    serviceAccountCredentials.set(
-        file(System.getenv("PLAY_STORE_PUBLISH_CREDENTIAL_FILE")),
-    )
+    val filePath = System.getenv("PLAY_STORE_PUBLISH_CREDENTIAL_FILE")
+    if (filePath != null) {
+        serviceAccountCredentials.set(
+            file(filePath),
+        )
+    }
+
     track.set("beta")
     defaultToAppBundles.set(true)
     userFraction.set(1.0)
