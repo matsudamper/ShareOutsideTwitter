@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.appdistribution)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.playPublisher)
 }
 
 android {
@@ -58,6 +59,15 @@ android {
     }
 }
 
+play {
+    serviceAccountCredentials.set(
+        file(System.getenv("PLAY_STORE_PUBLISH_CREDENTIAL_FILE"))
+    )
+    track.set("beta")
+    defaultToAppBundles.set(true)
+    userFraction.set(1.0)
+}
+
 dependencies {
     implementation(project(":compose"))
 
@@ -80,4 +90,12 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+}
+
+tasks.create("buildAndRelease") {
+    dependsOn("assembleRelease", "publishReleaseBundle")
+}
+
+tasks.create("buildAndAppDistribution") {
+    dependsOn("assembleRelease", "appDistributionUploadRelease")
 }
