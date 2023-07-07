@@ -11,6 +11,7 @@ plugins {
 android {
     namespace = "net.matsudamper.shareoutside.bluebird"
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
+    buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
         minSdk = libs.versions.android.sdk.min.get().toInt()

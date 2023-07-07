@@ -16,6 +16,7 @@ dependencyResolutionManagement {
             version("android.sdk.min", "24")
             version("android.sdk.target", "33")
             version("android.sdk.compile", "33")
+            version("android.buildTools", "33.0.1")
             version("android.compose.compiler", "1.4.3")
 
             version("agp", "8.2.0-alpha07")
