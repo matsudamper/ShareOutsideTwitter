@@ -29,7 +29,7 @@ android {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
 
             firebaseAppDistribution {
@@ -61,7 +61,7 @@ android {
 
 play {
     serviceAccountCredentials.set(
-        file(System.getenv("PLAY_STORE_PUBLISH_CREDENTIAL_FILE"))
+        file(System.getenv("PLAY_STORE_PUBLISH_CREDENTIAL_FILE")),
     )
     track.set("beta")
     defaultToAppBundles.set(true)
