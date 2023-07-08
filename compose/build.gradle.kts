@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -18,10 +20,10 @@ android {
     testOptions {
         unitTests.all {
             it.useJUnitPlatform()
-            // it.testLogging.events = setOf(TestLogEvent.FAILED)
+            it.testLogging.events = setOf(TestLogEvent.FAILED)
         }
         unitTests {
-            // includeAndroidResources(true)
+            isIncludeAndroidResources = true
         }
     }
     buildTypes {
@@ -29,7 +31,7 @@ android {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
