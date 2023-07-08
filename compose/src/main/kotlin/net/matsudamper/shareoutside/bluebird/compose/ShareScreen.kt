@@ -39,7 +39,7 @@ public data class MainScreenUiState(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-public fun MainScreen(
+public fun ShareScreen(
     modifier: Modifier = Modifier,
     uiState: MainScreenUiState,
 ) {
@@ -101,7 +101,7 @@ public fun MainScreen(
 @Preview
 @Composable
 private fun Preview() {
-    MainScreen(
+    ShareScreen(
         uiState = MainScreenUiState(
             shareTextValue = TextFieldValue(),
             event = object : MainScreenUiState.Event {

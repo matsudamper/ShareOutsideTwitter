@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import net.matsudamper.shareoutside.bluebird.compose.MainScreenUiState
+import net.matsudamper.shareoutside.bluebird.compose.ShareScreenUiState
 import net.matsudamper.shareoutside.bluebird.lib.ViewModelEventHandler
 import net.matsudamper.shareoutside.bluebird.lib.ViewModelEventSender
 import java.net.URL
 import java.net.URLDecoder
 
-public class MainActivityViewModel : ViewModel() {
+public class ShareActivityViewModel : ViewModel() {
     private val viewModelStateFlow: MutableStateFlow<ViewModelState> = MutableStateFlow(
         ViewModelState(
             shareTextValue = TextFieldValue(),
@@ -23,10 +23,10 @@ public class MainActivityViewModel : ViewModel() {
     private val viewModelEventSender: ViewModelEventSender<Event> = ViewModelEventSender()
     public val viewModelEventHandler: ViewModelEventHandler<Event> = viewModelEventSender.asHandler()
 
-    public val uiStateFlow: StateFlow<MainScreenUiState> = MutableStateFlow(
-        MainScreenUiState(
+    public val uiStateFlow: StateFlow<ShareScreenUiState> = MutableStateFlow(
+        ShareScreenUiState(
             shareTextValue = TextFieldValue(),
-            event = object : MainScreenUiState.Event {
+            event = object : ShareScreenUiState.Event {
                 override fun onShareTextValueChanged(value: TextFieldValue) {
                     viewModelStateFlow.update {
                         it.copy(
