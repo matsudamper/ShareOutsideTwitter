@@ -1,5 +1,6 @@
 package net.matsudamper.shareoutside.bluebird
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -61,9 +62,21 @@ public class MainActivity : ComponentActivity() {
         handleIntent(intent)
     }
 
+    @SuppressLint("UnsafeIntentLaunch")
     private fun handleIntent(intent: Intent?) {
         intent ?: return
+        if (intent.categories.orEmpty().contains(Intent.CATEGORY_LAUNCHER)) return
+        if (!intent.categories.orEmpty().contains(Intent.CATEGORY_APP_BROWSER)) return
 
-        viewModel.handleDataString(intent.dataString)
+        val handled = viewModel.handleDataString(intent.dataString)
+        if (handled.not()) {
+            startActivity(
+                intent.also { intent ->
+                    intent.setComponent(null)
+                    intent.setPackage("com.twitter.android")
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                },
+            )
+        }
     }
 }

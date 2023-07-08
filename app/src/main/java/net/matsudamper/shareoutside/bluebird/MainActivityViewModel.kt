@@ -60,7 +60,11 @@ public class MainActivityViewModel : ViewModel() {
         }
     }.asStateFlow()
 
-    public fun handleDataString(dataString: String?) {
+    /**
+     * @return handled
+     */
+    public fun handleDataString(dataString: String?) : Boolean {
+        dataString ?: return false
         val parseResult = runCatching {
             URL(dataString).query.split("&").associate { param ->
                 param.split("=").let { keyValue ->
@@ -77,8 +81,10 @@ public class MainActivityViewModel : ViewModel() {
 
         if (parseResult != null) {
             updateText(parseResult)
-            return
+            return true
         }
+
+        return false
     }
 
     private fun updateText(text: String) {
