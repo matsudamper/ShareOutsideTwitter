@@ -65,6 +65,8 @@ dependencyResolutionManagement {
                     .withoutVersion()
             }
 
+            library("coil.compose", "io.coil-kt:coil-compose:2.4.0")
+
             plugin("androidApplication", "com.android.application").versionRef("agp")
             plugin("kotlinAndroid", "org.jetbrains.kotlin.android").versionRef("kotlin")
             plugin("appdistribution", "com.google.firebase.appdistribution").version("4.0.0")
@@ -77,3 +79,4 @@ dependencyResolutionManagement {
 rootProject.name = "Share outside Twitter"
 include(":app")
 include(":compose")
+include(":resources")
