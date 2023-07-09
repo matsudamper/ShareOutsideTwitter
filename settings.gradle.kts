@@ -13,6 +13,9 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
+            version("versionCode", "1")
+            version("versionName", "1.0.0")
+
             version("android.sdk.min", "24")
             version("android.sdk.target", "33")
             version("android.sdk.compile", "33")
