@@ -66,11 +66,16 @@ public class ShareActivityViewModel : ViewModel() {
     public fun handleDataString(dataString: String?): Boolean {
         dataString ?: return false
         val parseResult = runCatching {
-            URL(dataString).query.split("&").associate { param ->
-                param.split("=").let { keyValue ->
-                    URLDecoder.decode(keyValue[0]) to
-                            URLDecoder.decode(keyValue[1])
+            val url = URL(dataString)
+            when (url.path) {
+                "/intent/tweet" -> url.query.split("&").associate { param ->
+                    param.split("=").let { keyValue ->
+                        URLDecoder.decode(keyValue[0]) to
+                                URLDecoder.decode(keyValue[1])
+                    }
                 }
+
+                else -> return false
             }
         }.map {
             listOfNotNull(
