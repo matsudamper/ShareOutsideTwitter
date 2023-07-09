@@ -45,7 +45,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-
+            signingConfig = signingConfigs.getByName("release")
             firebaseAppDistribution {
                 artifactType = "APK"
                 serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS_FILE")
