@@ -1,4 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.LibraryBuildType
 
 plugins {
     id("com.android.library")
@@ -6,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "net.matsudamper.shareoutside.bluebird.compose"
+    namespace = "net.matsudamper.shareoutside.bluebird.base"
 
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
     defaultConfig {
@@ -33,6 +35,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            buildValues(
+                adMobIdShare = System.getenv("ADMOB_ID_SHARE").orEmpty(),
+            )
+        }
+        debug {
+            buildValues(
+                adMobIdShare = "ca-app-pub-3940256099942544/6300978111",
+            )
         }
     }
     compileOptions {
@@ -43,10 +53,7 @@ android {
         freeCompilerArgs += "-Xexplicit-api=strict"
     }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.android.compose.compiler.get()
+        buildConfig = true
     }
     packaging {
         resources {
@@ -57,10 +64,14 @@ android {
     }
 }
 
-dependencies {
-    implementation(project(":resources"))
-    implementation(project(":base"))
+fun LibraryBuildType.buildValues(
+    adMobIdShare: String,
+) {
+    buildConfigField("String", "ADMOB_ID_SHARE", "\"" + adMobIdShare + "\"")
+}
 
+
+dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -69,11 +80,6 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(libs.android.navigation.compose)
-    implementation(libs.gms.ads)
-
-    implementation(libs.coil.compose)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

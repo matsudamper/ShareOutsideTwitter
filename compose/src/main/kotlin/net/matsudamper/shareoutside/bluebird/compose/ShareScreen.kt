@@ -86,6 +86,10 @@ public fun ShareScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
+                AdMob(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()

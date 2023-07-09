@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -16,7 +19,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${ADMOB_APPLICATION_ID}"/>
+            android:value="${ADMOB_APPLICATION_ID}" />
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
@@ -36,8 +39,8 @@
 
         <activity
             android:name=".ShareActivity"
-            android:exported="true"
             android:autoRemoveFromRecents="true"
+            android:exported="true"
             android:theme="@style/Theme.ShareOutsideTwitter">
 
             <intent-filter android:autoVerify="false">

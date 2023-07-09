@@ -53,13 +53,11 @@ android {
             }
             buildValues(
                 adMobApplicationID = System.getenv("ADMOB_APPLICATION_ID").orEmpty(),
-                adMobIdShare = System.getenv("ADMOB_ID_SHARE").orEmpty(),
             )
         }
         debug {
             buildValues(
                 adMobApplicationID = "ca-app-pub-3940256099942544~3347511713",
-                adMobIdShare = "ca-app-pub-3940256099942544/6300978111",
             )
         }
     }
@@ -87,14 +85,12 @@ android {
 
 fun ApplicationBuildType.buildValues(
     adMobApplicationID: String,
-    adMobIdShare: String,
 ) {
     addManifestPlaceholders(
         mapOf(
             "ADMOB_APPLICATION_ID" to adMobApplicationID,
         ),
     )
-    buildConfigField("String", "ADMOB_ID_SHARE", "\n" + adMobIdShare + "\n")
 }
 
 play {
@@ -121,6 +117,8 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.gms.ads)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

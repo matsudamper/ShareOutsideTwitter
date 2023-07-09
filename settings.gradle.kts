@@ -26,11 +26,13 @@ dependencyResolutionManagement {
 
             val junitVersion = "4.13.2"
             library("junit", "junit:junit:$junitVersion")
+
             library("androidx.test.ext.junit", "androidx.test.ext:junit:1.1.5")
             library("espresso.core", "androidx.test.espresso:espresso-core:3.5.1")
             library("lifecycle.runtime.ktx", "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
             library("activity.compose", "androidx.activity:activity-compose:1.7.2")
             library("android.navigation.compose", "androidx.navigation:navigation-compose:2.6.0")
+            library("gms.ads", "com.google.android.gms:play-services-ads:20.6.0")
 
             run {
                 library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
@@ -62,3 +64,4 @@ rootProject.name = "Share outside Twitter"
 include(":app")
 include(":compose")
 include(":resources")
+include(":base")
