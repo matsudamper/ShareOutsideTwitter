@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("versionCode", "3")
+            version("versionCode", "4")
             version("versionName", "1.0.0")
 
             version("android.sdk.min", "24")
