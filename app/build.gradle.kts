@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationBuildType
 import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
@@ -50,6 +51,16 @@ android {
                 artifactType = "APK"
                 serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS_FILE")
             }
+            buildValues(
+                adMobApplicationID = System.getenv("ADMOB_APPLICATION_ID").orEmpty(),
+                adMobIdShare = System.getenv("ADMOB_ID_SHARE").orEmpty(),
+            )
+        }
+        debug {
+            buildValues(
+                adMobApplicationID = "ca-app-pub-3940256099942544~3347511713",
+                adMobIdShare = "ca-app-pub-3940256099942544/6300978111",
+            )
         }
     }
     compileOptions {
@@ -72,6 +83,18 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+fun ApplicationBuildType.buildValues(
+    adMobApplicationID: String,
+    adMobIdShare: String,
+) {
+    addManifestPlaceholders(
+        mapOf(
+            "ADMOB_APPLICATION_ID" to adMobApplicationID,
+        ),
+    )
+    buildConfigField("String", "ADMOB_ID_SHARE", "\n" + adMobIdShare + "\n")
 }
 
 play {
