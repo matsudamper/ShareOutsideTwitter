@@ -20,9 +20,6 @@ public class MainActivity : ComponentActivity() {
                 mainNavigationScreenUiState = remember {
                     MainNavigationScreenUiState(
                         event = object : MainNavigationScreenUiState.Event {
-                            override fun onBackRequest() {
-                                onBackPressedDispatcher.onBackPressed()
-                            }
                         },
                     )
                 },

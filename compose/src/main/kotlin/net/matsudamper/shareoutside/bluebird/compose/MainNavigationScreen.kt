@@ -1,8 +1,6 @@
 package net.matsudamper.shareoutside.bluebird.compose
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
@@ -14,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import net.matsudamper.shareoutside.bluebird.compose.theme.ShareOutsideTwitterTheme
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun MainNavigationScreen(
     mainNavigationScreenUiState: MainNavigationScreenUiState,
@@ -22,12 +19,6 @@ public fun MainNavigationScreen(
 ) {
     val navController = rememberNavController()
     val mainScreenNavController = rememberMainScreenNavController(navController)
-
-    BackHandler(true) {
-        if (navController.popBackStack().not()) {
-            mainNavigationScreenUiState.event.onBackRequest()
-        }
-    }
 
     ShareOutsideTwitterTheme {
         NavHost(
@@ -56,9 +47,7 @@ public data class MainNavigationScreenUiState(
     val event: Event,
 ) {
     @Immutable
-    public interface Event {
-        public fun onBackRequest()
-    }
+    public interface Event
 }
 
 internal enum class MainScreenPage(val path: String) {
