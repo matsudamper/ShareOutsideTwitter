@@ -103,7 +103,6 @@ play {
 
     track.set("beta")
     defaultToAppBundles.set(true)
-    userFraction.set(1.0)
 }
 
 dependencies {
