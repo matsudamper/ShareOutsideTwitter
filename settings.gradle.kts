@@ -55,7 +55,7 @@ dependencyResolutionManagement {
             plugin("kotlinAndroid", "org.jetbrains.kotlin.android").version("1.8.10")
             plugin("appdistribution", "com.google.firebase.appdistribution").version("4.0.0")
             plugin("googleServices", "com.google.gms.google-services").version("4.3.15")
-            plugin("playPublisher", "com.github.triplet.play").version("3.7.0")
+            plugin("playPublisher", "com.github.triplet.play").version("3.8.4")
         }
     }
 }
