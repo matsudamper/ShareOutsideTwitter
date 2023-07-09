@@ -3,6 +3,8 @@ package net.matsudamper.shareoutside.bluebird
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import java.net.URL
+import java.net.URLDecoder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,8 +13,6 @@ import kotlinx.coroutines.launch
 import net.matsudamper.shareoutside.bluebird.compose.ShareScreenUiState
 import net.matsudamper.shareoutside.bluebird.lib.ViewModelEventHandler
 import net.matsudamper.shareoutside.bluebird.lib.ViewModelEventSender
-import java.net.URL
-import java.net.URLDecoder
 
 public class ShareActivityViewModel : ViewModel() {
     private val viewModelStateFlow: MutableStateFlow<ViewModelState> = MutableStateFlow(
@@ -67,21 +67,29 @@ public class ShareActivityViewModel : ViewModel() {
         dataString ?: return false
         val parseResult = runCatching {
             val url = URL(dataString)
+            val params = getParams(url)
             when (url.path) {
-                "/intent/tweet" -> url.query.split("&").associate { param ->
-                    param.split("=").let { keyValue ->
-                        URLDecoder.decode(keyValue[0]) to
-                                URLDecoder.decode(keyValue[1])
-                    }
+                "/intent/tweet" -> {
+                    listOfNotNull(
+                        params["text"],
+                        params["url"],
+                    ).joinToString("\n")
+                }
+
+                "/share" -> {
+                    listOfNotNull(
+                        params["text"],
+                        params["url"],
+                        params["via"]?.let {
+                            "via $it"
+                        }
+                    ).joinToString("\n")
                 }
 
                 else -> return false
             }
-        }.map {
-            listOfNotNull(
-                it["text"],
-                it["url"],
-            ).joinToString("\n")
+        }.onFailure {
+            it.printStackTrace()
         }.getOrNull()
 
         if (parseResult != null) {
@@ -90,6 +98,15 @@ public class ShareActivityViewModel : ViewModel() {
         }
 
         return false
+    }
+
+    private fun getParams(url: URL): Map<String, String> {
+        return url.query.split("&").associate { param ->
+            param.split("=").let { keyValue ->
+                URLDecoder.decode(keyValue[0]) to
+                        URLDecoder.decode(keyValue.getOrNull(1).orEmpty())
+            }
+        }
     }
 
     private fun updateText(text: String) {
