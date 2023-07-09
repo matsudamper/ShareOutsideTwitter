@@ -40,6 +40,8 @@ dependencyResolutionManagement {
                 .versionRef("lifecycle_runtime_ktx")
             library("activity_compose", "androidx.activity", "activity-compose")
                 .versionRef("activity_compose")
+            library("android.navigation.compose", "androidx.navigation:navigation-compose:2.6.0")
+
             run {
                 library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
                 library("firebase.crashlytics", "com.google.firebase", "firebase-crashlytics-ktx").withoutVersion()

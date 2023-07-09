@@ -64,8 +64,6 @@ public class ShareActivity() : ComponentActivity() {
     @SuppressLint("UnsafeIntentLaunch")
     private fun handleIntent(intent: Intent?) {
         intent ?: return
-        if (intent.categories.orEmpty().contains(Intent.CATEGORY_LAUNCHER)) return
-        if (!intent.categories.orEmpty().contains(Intent.CATEGORY_APP_BROWSER)) return
 
         val handled = viewModel.handleDataString(intent.dataString)
         if (handled.not()) {
@@ -76,6 +74,7 @@ public class ShareActivity() : ComponentActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 },
             )
+            finish()
         }
     }
 }

@@ -63,7 +63,7 @@ public class ShareActivityViewModel : ViewModel() {
     /**
      * @return handled
      */
-    public fun handleDataString(dataString: String?) : Boolean {
+    public fun handleDataString(dataString: String?): Boolean {
         dataString ?: return false
         val parseResult = runCatching {
             URL(dataString).query.split("&").associate { param ->

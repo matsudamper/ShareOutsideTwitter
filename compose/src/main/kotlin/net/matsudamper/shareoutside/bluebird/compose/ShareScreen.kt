@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import net.matsudamper.shareoutside.bluebird.compose.theme.ShareOutsideTwitterTheme
 
-public data class MainScreenUiState(
+public data class ShareScreenUiState(
     val shareTextValue: TextFieldValue,
     val event: Event,
 ) {
@@ -41,7 +41,7 @@ public data class MainScreenUiState(
 @Composable
 public fun ShareScreen(
     modifier: Modifier = Modifier,
-    uiState: MainScreenUiState,
+    uiState: ShareScreenUiState,
 ) {
     ShareOutsideTwitterTheme {
         Scaffold(
@@ -102,9 +102,9 @@ public fun ShareScreen(
 @Composable
 private fun Preview() {
     ShareScreen(
-        uiState = MainScreenUiState(
+        uiState = ShareScreenUiState(
             shareTextValue = TextFieldValue(),
-            event = object : MainScreenUiState.Event {
+            event = object : ShareScreenUiState.Event {
                 override fun onShareTextValueChanged(value: TextFieldValue) {}
                 override fun onClickHelp() {}
                 override fun onClickShare() {}
