@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.appdistribution)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.playPublisher)
+    id("com.google.firebase.crashlytics")
 }
 
 android {

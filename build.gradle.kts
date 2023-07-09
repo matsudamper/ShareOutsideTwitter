@@ -7,4 +7,9 @@ plugins {
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.playPublisher) apply false
 }
+buildscript {
+    dependencies {
+        classpath(libs.firebase.crashlytics.plguin)
+    }
+}
 true // Needed to make the Suppress annotation work for the plugins block

@@ -34,11 +34,11 @@ dependencyResolutionManagement {
             library("android.navigation.compose", "androidx.navigation:navigation-compose:2.6.0")
             library("gms.ads", "com.google.android.gms:play-services-ads:20.6.0")
 
-            run {
-                library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
-                library("firebase.crashlytics", "com.google.firebase", "firebase-crashlytics-ktx").withoutVersion()
-                library("firebase.analytics", "com.google.firebase", "firebase-analytics-ktx").withoutVersion()
-            }
+            library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
+            library("firebase.crashlytics", "com.google.firebase", "firebase-crashlytics-ktx").withoutVersion()
+            library("firebase.analytics", "com.google.firebase", "firebase-analytics-ktx").withoutVersion()
+            library("firebase.crashlytics.plguin", "com.google.firebase", "firebase-crashlytics-gradle").version("2.9.5")
+
             // BOM
             library("compose.bom", "androidx.compose:compose-bom:2023.03.00")
             library("ui", "androidx.compose.ui", "ui").withoutVersion()
