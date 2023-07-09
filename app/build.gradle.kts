@@ -112,7 +112,7 @@ dependencies {
 }
 
 tasks.create("buildAndRelease") {
-    dependsOn("assembleRelease", "publishReleaseBundle")
+    dependsOn("bundleRelease", "publishReleaseBundle")
 }
 
 tasks.create("buildAndAppDistribution") {
