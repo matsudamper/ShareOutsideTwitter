@@ -193,7 +193,7 @@ private fun TwitterHelp(
         },
         text = { index ->
             val text = when (index) {
-                0 -> "設定から「デフォルトで開く」を開きます。"
+                0 -> "Twitterアプリの設定を開き、「デフォルトで開く」を開きます。"
                 1 -> "「対応リンクを開く」を押して無効化します。"
                 2 -> "オフにできたら次のページでこのアプリでリンクを開く設定を行います。"
                 else -> throw IllegalStateException()
@@ -246,7 +246,7 @@ private fun ThisAppHelp(modifier: Modifier = Modifier) {
         },
         text = { index ->
             val text = when (index) {
-                0 -> "設定から「デフォルトで開く」を開きます。"
+                0 -> "このアプリの設定を開き、「デフォルトで開く」を開きます。"
                 1 -> "「リンクを追加」を押します。"
                 2 -> "サポートされているリンクから「twitter.com」を選びます。"
                 else -> throw IllegalStateException()
