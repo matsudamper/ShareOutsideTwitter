@@ -310,7 +310,7 @@ private fun HelpScaffold(
             }
         }
         Indicator(
-            count = pageCount,
+            count = pagerState.pageCount,
             currentIndex = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
         )
         Spacer(modifier = Modifier.height(12.dp))
