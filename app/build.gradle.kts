@@ -27,8 +27,11 @@ android {
             }
         }
         val isCI = System.getenv("CI")?.toBoolean() == true
-        val debugKeystoreFile = System.getenv("DEBUG_KEYSTORE_FILE")?.let { rootProject.file(it) }
-        if (isCI && debugKeystoreFile != null && debugKeystoreFile.exists()) {
+        if (isCI) {
+            val debugKeystoreFile = System.getenv("DEBUG_KEYSTORE_FILE")?.let { rootProject.file(it) }
+            if (debugKeystoreFile == null || !debugKeystoreFile.exists()) {
+                error("CI では DEBUG_KEYSTORE_FILE に共通の debug keystore を指定する必要がある")
+            }
             create("ci") {
                 storeFile = debugKeystoreFile
                 storePassword = "android"
