@@ -24,12 +24,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -46,7 +46,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 
 @Composable
 public fun rememberTabLayoutState(): TabLayoutState {
@@ -203,16 +202,15 @@ internal fun TabLayout(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    val coroutineScope = rememberCoroutineScope()
     Column(modifier = Modifier.fillMaxSize()) {
         (0..10).forEach { index ->
+            val tabLayoutState = rememberTabLayoutState()
+            LaunchedEffect(tabLayoutState) {
+                tabLayoutState.snapTo(0, index / 10f)
+            }
             TabLayout(
                 modifier = Modifier.padding(bottom = 4.dp),
-                state = rememberTabLayoutState().apply {
-                    coroutineScope.launch {
-                        snapTo(0, index / 10f)
-                    }
-                },
+                state = tabLayoutState,
                 size = 3,
                 content = {
                     Box(
