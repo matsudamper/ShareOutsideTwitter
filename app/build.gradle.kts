@@ -1,10 +1,11 @@
 import com.android.build.api.dsl.ApplicationBuildType
 import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.appdistribution)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.playPublisher)
@@ -14,7 +15,6 @@ plugins {
 android {
     namespace = "net.matsudamper.shareoutside.bluebird"
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
-    buildToolsVersion = libs.versions.android.buildTools.get()
 
     signingConfigs {
         create("release") {
@@ -66,16 +66,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-        freeCompilerArgs += "-Xexplicit-api=strict"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.android.compose.compiler.get()
     }
     packaging {
         resources {
@@ -132,10 +125,17 @@ dependencies {
     implementation(libs.firebase.analytics)
 }
 
-tasks.create("buildAndRelease") {
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+        freeCompilerArgs.add("-Xexplicit-api=strict")
+    }
+}
+
+tasks.register("buildAndRelease") {
     dependsOn("bundleRelease", "publishReleaseBundle")
 }
 
-tasks.create("buildAndAppDistribution") {
+tasks.register("buildAndAppDistribution") {
     dependsOn("assembleRelease", "appDistributionUploadRelease")
 }

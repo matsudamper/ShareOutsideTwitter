@@ -1,8 +1,8 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeCompiler)
 }
 
 android {
@@ -39,14 +39,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        freeCompilerArgs += "-Xexplicit-api=strict"
-    }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.android.compose.compiler.get()
     }
     packaging {
         resources {
@@ -54,6 +48,12 @@ android {
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexplicit-api=strict")
     }
 }
 
