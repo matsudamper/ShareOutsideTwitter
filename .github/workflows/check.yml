@@ -15,8 +15,9 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      pull-requests: write
-      id-token: write
+    outputs:
+      apk_name: ${{ steps.rename_apk.outputs.apk_name }}
+      apk_artifact_url: ${{ steps.upload_apk.outputs.artifact-url }}
     env:
       GRADLE_OPTS: -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false -Dorg.gradle.workers.max=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx4500m"
       DEBUG_KEYSTORE_FILE: debug.keystore
@@ -57,16 +58,36 @@ jobs:
         with:
           path: ${{ steps.rename_apk.outputs.apk_path }}
           archive: false
+      - run: ./gradlew lintDebug
+      - run: ./gradlew testDebugUnitTest
+
+  # PR のコードを OIDC トークンや PR への書き込み権限がある環境で実行しないよう、
+  # 配布はチェックアウトせずビルド済み APK だけを受け取るジョブで行う
+  distribute:
+    needs: check
+    if: >-
+      !cancelled() && needs.check.outputs.apk_artifact_url != '' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.check.outputs.apk_name }}
       - id: upload_s3
         name: Upload APK to S3
         uses: matsudamper/actions/upload-matsudamper-s3@a1ecf81b1a0ce320824a49711e456f396e4e8fea
         continue-on-error: true
         with:
-          file_path: ${{ steps.rename_apk.outputs.apk_path }}
+          file_path: ${{ needs.check.outputs.apk_name }}
       - name: Generate GitHub QR code
         if: github.event_name == 'pull_request'
         env:
-          APK_URL: ${{ steps.upload_apk.outputs.artifact-url }}
+          APK_URL: ${{ needs.check.outputs.apk_artifact_url }}
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends qrencode
@@ -92,7 +113,7 @@ jobs:
           path: qrcode-s3.png
           archive: false
       - name: Comment APK download URL
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
         with:
           header: apk-download
@@ -102,10 +123,8 @@ jobs:
 
             | Storage | Download Link | QR Code |
             | :--- | :--- | :--- |
-            | 🐙 GitHub Artifacts | [Download](${{ steps.upload_apk.outputs.artifact-url }}) | [View](${{ steps.github_qr_artifact.outputs.artifact-url }}) |
+            | 🐙 GitHub Artifacts | [Download](${{ needs.check.outputs.apk_artifact_url }}) | [View](${{ steps.github_qr_artifact.outputs.artifact-url }}) |
             ${{ steps.upload_s3.outputs.url && format('| ☁️ S3 | [Download]({0}) | [View]({1}) |', steps.upload_s3.outputs.url, steps.s3_qr_artifact.outputs.artifact-url) || '' }}
 
             ---
-            *Artifact Name: `${{ steps.rename_apk.outputs.apk_name }}`*
-      - run: ./gradlew lintDebug
-      - run: ./gradlew testDebugUnitTest
+            *Artifact Name: `${{ needs.check.outputs.apk_name }}`*
