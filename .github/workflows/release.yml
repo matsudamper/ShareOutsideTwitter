@@ -1,0 +1,43 @@
+name: release
+on:
+  workflow_run:
+    workflows:
+      - release dispatch
+    types:
+      - completed
+    branches:
+      - main
+
+# 完了順に処理し、古い実行の Release が新しい実行より後に作られないようにする
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  # PR と同じワークフローでビルドした APK（同じ署名・バージョン）をそのまま配布する
+  release:
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: '*.apk'
+          merge-multiple: true
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          APK_PATH=$(find . -maxdepth 1 -name "*.apk" | head -1)
+          RELEASE_TAG=$(TZ=Asia/Tokyo date +%Y%m%d-%H%M%S)
+          gh release create "$RELEASE_TAG" "$APK_PATH" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$HEAD_SHA" \
+            --title "$RELEASE_TAG" \
+            --generate-notes
