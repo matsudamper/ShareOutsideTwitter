@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "net.matsudamper.shareoutside.bluebird"
-    compileSdk = libs.versions.android.sdk.compile.get().toInt()
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     signingConfigs {
         create("release") {
@@ -26,11 +26,24 @@ android {
                 keyPassword = System.getenv("KEY_PASSWORD")
             }
         }
+        val isCI = System.getenv("CI")?.toBoolean() == true
+        if (isCI) {
+            val debugKeystoreFile = System.getenv("DEBUG_KEYSTORE_FILE")?.let { rootProject.file(it) }
+            if (debugKeystoreFile == null || !debugKeystoreFile.exists()) {
+                error("CI では DEBUG_KEYSTORE_FILE に共通の debug keystore を指定する必要がある")
+            }
+            create("ci") {
+                storeFile = debugKeystoreFile
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
     }
 
     defaultConfig {
-        minSdk = libs.versions.android.sdk.min.get().toInt()
-        targetSdk = libs.versions.android.sdk.target.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
 
@@ -57,6 +70,10 @@ android {
             )
         }
         debug {
+            val ciSigningConfig = signingConfigs.findByName("ci")
+            if (ciSigningConfig != null) {
+                signingConfig = ciSigningConfig
+            }
             buildValues(
                 adMobApplicationID = "ca-app-pub-3940256099942544~3347511713",
             )
