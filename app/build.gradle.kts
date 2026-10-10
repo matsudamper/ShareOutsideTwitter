@@ -26,6 +26,16 @@ android {
                 keyPassword = System.getenv("KEY_PASSWORD")
             }
         }
+        val isCI = System.getenv("CI")?.toBoolean() == true
+        val debugKeystoreFile = System.getenv("DEBUG_KEYSTORE_FILE")?.let { rootProject.file(it) }
+        if (isCI && debugKeystoreFile != null && debugKeystoreFile.exists()) {
+            create("ci") {
+                storeFile = debugKeystoreFile
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
     }
 
     defaultConfig {
@@ -57,6 +67,10 @@ android {
             )
         }
         debug {
+            val ciSigningConfig = signingConfigs.findByName("ci")
+            if (ciSigningConfig != null) {
+                signingConfig = ciSigningConfig
+            }
             buildValues(
                 adMobApplicationID = "ca-app-pub-3940256099942544~3347511713",
             )
