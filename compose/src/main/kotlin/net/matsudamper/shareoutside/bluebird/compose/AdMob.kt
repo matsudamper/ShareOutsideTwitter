@@ -19,7 +19,7 @@ internal fun AdMob(
         factory = {
             AdView(it).also { view ->
                 view.adUnitId = BuildConfig.ADMOB_ID_SHARE
-                view.adSize = AdSize.BANNER
+                view.setAdSize(AdSize.BANNER)
 
                 val adRequest = AdRequest.Builder().build()
                 view.loadAd(adRequest)
