@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -81,7 +80,7 @@ public fun HelpScreen(
                                     uiState.event.onClickBack()
                                 },
                             ) {
-                                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
+                                Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = "back")
                             }
                         },
                         title = {
@@ -171,11 +170,10 @@ private fun TwitterHelp(
     modifier: Modifier = Modifier,
     requestNextPage: () -> Unit,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     HelpScaffold(
         modifier = modifier,
-        pageCount = 3,
         pagerState = pagerState,
         image = { index ->
             Image(
@@ -224,11 +222,10 @@ private fun TwitterHelp(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ThisAppHelp(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     HelpScaffold(
         modifier = modifier,
-        pageCount = 3,
         pagerState = pagerState,
         image = { index ->
             Image(
@@ -277,11 +274,10 @@ private fun ThisAppHelp(modifier: Modifier = Modifier) {
 @Composable
 private fun HelpScaffold(
     modifier: Modifier = Modifier,
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState,
     image: @Composable (index: Int) -> Unit,
     text: @Composable (index: Int) -> Unit,
     nextButton: @Composable (index: Int) -> Unit,
-    @Suppress("SameParameterValue") pageCount: Int,
 ) {
     Column(
         modifier = modifier,
@@ -290,11 +286,10 @@ private fun HelpScaffold(
         HorizontalPager(
             modifier = Modifier.weight(1f),
             state = pagerState,
-            pageCount = pageCount,
         ) { index ->
             FlowColumn(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                itemHorizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
