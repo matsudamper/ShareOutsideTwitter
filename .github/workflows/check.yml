@@ -6,7 +6,7 @@ on:
       - main
 
 concurrency:
-  group: check-${{ github.event.pull_request.number || github.sha }}
+  group: check-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
