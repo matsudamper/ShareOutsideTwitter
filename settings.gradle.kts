@@ -37,7 +37,7 @@ dependencyResolutionManagement {
             library("firebase.bom", "com.google.firebase:firebase-bom:32.1.1")
             library("firebase.crashlytics", "com.google.firebase", "firebase-crashlytics-ktx").withoutVersion()
             library("firebase.analytics", "com.google.firebase", "firebase-analytics-ktx").withoutVersion()
-            library("firebase.crashlytics.plguin", "com.google.firebase", "firebase-crashlytics-gradle").version("2.9.5")
+            library("firebase.crashlytics.plguin", "com.google.firebase", "firebase-crashlytics-gradle").version("2.9.9")
 
             // BOM
             library("compose.bom", "androidx.compose:compose-bom:2023.03.00")
