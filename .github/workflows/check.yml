@@ -6,7 +6,7 @@ on:
       - main
 
 concurrency:
-  group: check-${{ github.event.pull_request.number || github.sha }}
+  group: check-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -121,9 +121,6 @@ jobs:
   release:
     needs: check
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    concurrency:
-      group: release-main
-      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -138,12 +135,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           APK_NAME: ${{ needs.check.outputs.apk_name }}
         run: |
-          # 連続 push で古い実行が後から完了したとき、古い APK を Latest にしない
-          MAIN_HEAD_SHA=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
-          if [ "$MAIN_HEAD_SHA" != "$GITHUB_SHA" ]; then
-            echo "main が $MAIN_HEAD_SHA に進んでいるためリリースをスキップする"
-            exit 0
-          fi
           RELEASE_TAG=$(TZ=Asia/Tokyo date +%Y%m%d-%H%M%S)
           gh release create "$RELEASE_TAG" "$APK_NAME" \
             --repo "$GITHUB_REPOSITORY" \
