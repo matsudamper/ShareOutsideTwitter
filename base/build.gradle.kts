@@ -3,8 +3,7 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.LibraryBuildType
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    alias(libs.plugins.androidLibrary)
 }
 
 android {
@@ -49,9 +48,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        freeCompilerArgs += "-Xexplicit-api=strict"
-    }
     buildFeatures {
         buildConfig = true
     }
@@ -70,6 +66,12 @@ fun LibraryBuildType.buildValues(
     buildConfigField("String", "ADMOB_ID_SHARE", "\"" + adMobIdShare + "\"")
 }
 
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexplicit-api=strict")
+    }
+}
 
 dependencies {
     implementation(libs.core.ktx)
