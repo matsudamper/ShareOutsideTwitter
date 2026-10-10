@@ -9,9 +9,9 @@ plugins {
 android {
     namespace = "net.matsudamper.shareoutside.bluebird.base"
 
-    compileSdk = libs.versions.android.sdk.compile.get().toInt()
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
-        minSdk = libs.versions.android.sdk.min.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
