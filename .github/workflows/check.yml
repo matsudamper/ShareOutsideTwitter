@@ -1,9 +1,8 @@
 name: release dispatch
 on:
   pull_request:
+  # on.push.branches では式が使えないため、デフォルトブランチ以外の push はジョブ側の if で除外する
   push:
-    branches:
-      - main
 
 concurrency:
   group: check-${{ github.event.pull_request.number || github.ref }}
@@ -11,6 +10,7 @@ concurrency:
 
 jobs:
   check:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -120,7 +120,7 @@ jobs:
   # PR と同じビルド済み APK（同じ署名・バージョン）をそのまま配布する
   release:
     needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
