@@ -16,7 +16,7 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 appdistribution = { id = "com.google.firebase.appdistribution", version = "5.3.0" }
 googleServices = { id = "com.google.gms.google-services", version = "4.5.0" }
-playPublisher = { id = "com.github.triplet.play", version = "4.1.1" }
+playPublisher = { id = "com.github.triplet.play", version = "4.1.2" }
 
 [libraries]
 core-ktx = { module = "androidx.core:core-ktx", version = "1.19.1" }
