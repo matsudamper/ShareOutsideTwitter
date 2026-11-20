@@ -21,7 +21,7 @@ playPublisher = { id = "com.github.triplet.play", version = "4.1.1" }
 [libraries]
 core-ktx = { module = "androidx.core:core-ktx", version = "1.19.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.11.0" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.11.1" }
 activity-compose = { module = "androidx.activity:activity-compose", version = "1.13.0" }
 android-navigation-compose = { module = "androidx.navigation:navigation-compose", version = "2.10.2" }
 gms-ads = { module = "com.google.android.gms:play-services-ads", version = "25.5.0" }
